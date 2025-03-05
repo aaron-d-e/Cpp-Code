@@ -9,6 +9,8 @@
  *    - file created
  * date modified: 2/26/2025
  *    - worked on functionalites
+ * date modified: 3/5/2024
+ *    - added correct item names
  *
  * This class provides a container for products contained in a produce service dump.
  */
@@ -16,6 +18,7 @@
  #include "proj4-ItemInfo.h"
  #include <iostream>
  using namespace std;
+ int JSONItem = 0;
 
 double stuCstrToDbl(const char *str){ // tested and works
     int count = 0;
@@ -76,13 +79,15 @@ void stuDblToCstr(char *cstr, double num){ //tested and works with minimal value
     }
 
     cstr[count] = '\0';
-    for (int i = 0; i < count; i++) { // GET RID OF THIS BEFORE TURNING IN
-        cout << cstr[i];
-    }
-    cout << endl;
 }
 
-void stuCstrCpy(char *dest, const char *src){ //FIX ME
+void stuCstrCpy(char *dest, const char *src){
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
 
 }
 
@@ -97,7 +102,9 @@ int stuCstrLen(const char *src){ //tested and works
 
 ostream& printCString(ostream &out, const char *src){ //tested and works
     int size = stuCstrLen(src);
-    out.write(src, size);
+    for (int i = 0; i < size; i++) {
+        out.put(src[i]);
+    }
     return out;
 }
 
@@ -137,6 +144,106 @@ double ItemInfo::getSellPrice() { //tested and works
 const char* ItemInfo::getDescription() { //tested and works
     return description;
 }
+
+void ItemInfo::toAmazonJSON(ostream &out) { //works
+    char write[20];
+    if (JSONItem == 0) {
+        printCString(out, "\t\"firstItem\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+    else if (JSONItem == 1) {
+        printCString(out, "\t\"secondItem\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+    else if (JSONItem == 2) {
+        printCString(out, "\t\"thirdItem\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+    else if (JSONItem == 3) {
+        printCString(out, "\t\"fourthItem\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+    else if (JSONItem == 4) {
+        printCString(out, "\t\"fifthItem\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+    else {
+        printCString(out, "\t\"Item5+\": {");
+        out.put('\n');
+        JSONItem++;
+    }
+
+    printCString(cout, "\t\t\"itemId\": ");
+    stuDblToCstr(write, itemId);
+    for (int i = 0; write[i] != '.'; i++) {
+        out.put(write[i]);
+    }
+    out.put(',');
+    out.put('\n');
+
+    printCString(cout, "\t\t\"description\": ");
+    out.put('\"');
+    printCString(cout, description);
+    out.put('\"');
+    out.put(',');
+    out.put('\n');
+
+    printCString(cout, "\t\t\"manPrice\": ");
+    stuDblToCstr(write, manCost);
+    printCString(out, write);
+    out.put(',');
+    out.put('\n');
+
+    printCString(cout, "\t\t\"sellPrice\": ");
+    stuDblToCstr(write, sellPrice);
+    printCString(out, write);
+    out.put('\n');
+
+    printCString(cout, "\t},");
+    out.put('\n');
+}
+void ItemInfo::displayItemInfo(ostream &out) { //FIX ME
+    char write[20];
+    stuDblToCstr(write, itemId);
+    printCString(out, "Item ID: ");
+    for (int i = 0; write[i] != '.'; i++) {
+        out.put(write[i]);
+    }
+    out.put('\n');
+
+    printCString(out, "Description: ");
+    printCString(out, description);
+    out.put('\n');
+
+    printCString(out, "Man Cost: ");
+    stuDblToCstr(write, manCost);
+    printCString(out, write);
+    out.put('\n');
+
+    printCString(out, "Sell Price: ");
+    stuDblToCstr(write, sellPrice);
+    printCString(out, write);
+    out.put('\n');
+
+    printCString(out, "Profit: ");
+    stuDblToCstr(write, calcProfit());
+    printCString(out, write);
+    out.put('\n');
+
+}
+
+double ItemInfo::calcProfit() {
+    double profit = sellPrice - manCost;
+    return profit;
+};
+
+
+
 
 
 
