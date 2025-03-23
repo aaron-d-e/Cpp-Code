@@ -1,3 +1,9 @@
+//
+// Created by Aaron on 3/23/2025.
+//
+
+#ifndef PROJ5_NCAAATHLETE_H
+#define PROJ5_NCAAATHLETE_H
 /**
  * file: NCAAAthlete.hpp
  * author: Prof. Aars
@@ -161,3 +167,4 @@ protected:
 };
 
 #endif
+#endif //PROJ5_NCAAATHLETE_H
