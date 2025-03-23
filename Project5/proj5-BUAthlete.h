@@ -10,6 +10,7 @@
 
 enum Position {OL, QB, RB, WR, TE, DL, DE, LB, CB, S, K};
 
+Position strToPosition(string&);
 class BUAthlete : public NCAAAthlete {
 
 protected:
