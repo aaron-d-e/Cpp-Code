@@ -2,34 +2,27 @@
 // Created by aaron on 3/18/2025.
 //
 
-#include "proj5-BUAthlete.h"
+#ifndef PROJ5_BUATHLETE_H
+#define PROJ5_BUATHLETE_H
+#include "proj5-NCAAAthlete.h"
+#include <sstream>
+#include <iostream>
 
-void BUAthlete::setEvaluation(int num) {
-    evaluation = num;
-}
+enum Position {OL, QB, RB, WR, TE, DL, DE, LB, CB, S, K};
 
-void BUAthlete::setPosition(Position pos) {
-    bestFit = pos;
-}
+Position strToPosition(string&);
+class BUAthlete : public NCAAAthlete {
 
-int BUAthlete::getEvaluation() {
-    return evaluation;
-}
+protected:
+    int evaluation;
+    Position bestFit;
 
-Position BUAthlete::getPosition() {
-    return bestFit;
-}
+public:
+    void setEvaluation(int); //WORKS
+    void setPosition(Position); //WORKS
+    int getEvaluation(); //WORKS
+    Position getPosition(); //WORKS
+    string toString(); //WORKS
+};
 
-string BUAthlete::toString() {
-
-    ostringstream stream;
-
-    stream << NCAAAthlete::toString(); //could cause problems
-    stream << "Evaluation: " << getEvaluation() << endl;
-    stream << "Position: " << getPosition() << endl;
-
-    return stream.str();
-}
-
-
-
+#endif //PROJ5_BUATHLETE_H
