@@ -81,12 +81,27 @@ BUAthlete& BUAthleteList::operator[](int ndx) {
 }
 
 int BUAthleteList::findById(int id) {
-    //binary search
+    int lo = 0;
+    int hi = size - 1;
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+
+        if (list[mid].getID() == id) {
+            return mid;
+        }
+        if (list[mid].getID() < id) {
+            lo = hi + 1;
+        }
+        else {
+            hi = mid - 1;
+        }
+    }
+
     return -1;
 }
 
 void BUAthleteList::sortByID() {
-    qSortID(list, 0, size);
+    qSortID(list, 0, size - 1);
 }
 
 void BUAthleteList::sortByPosition() {
@@ -100,7 +115,7 @@ void BUAthleteList::sortByPosition() {
 }
 
 void BUAthleteList::sortByEvaluation() {
-    qSortEVAL(list, 0, size);
+    qSortEVAL(list, 0, size - 1);
 }
 
 int partitionID(BUAthlete* a, int lo, int hi) {
