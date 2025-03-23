@@ -2,27 +2,49 @@
 // Created by aaron on 3/18/2025.
 //
 
-#ifndef PROJ5_BUATHLETE_H
-#define PROJ5_BUATHLETE_H
-#include "proj5-NCAAAthlete.h"
-#include <sstream>
-#include <iostream>
+#include "proj5-BUAthlete.h"
 
-enum Position {OL, QB, RB, WR, TE, DL, DE, LB, CB, S, K};
+void BUAthlete::setEvaluation(int num) {
+    evaluation = num;
+}
 
-Position strToPosition(string&);
-class BUAthlete : public NCAAAthlete {
+void BUAthlete::setPosition(Position pos) {
+    bestFit = pos;
+}
 
-protected:
-    int evaluation;
-    Position bestFit;
+int BUAthlete::getEvaluation() {
+    return evaluation;
+}
 
-public:
-    void setEvaluation(int); //WORKS
-    void setPosition(Position); //WORKS
-    int getEvaluation(); //WORKS
-    Position getPosition(); //WORKS
-    string toString(); //WORKS
-};
+Position BUAthlete::getPosition() {
+    return bestFit;
+}
 
-#endif //PROJ5_BUATHLETE_H
+string BUAthlete::toString() {
+
+    ostringstream stream;
+
+    stream << NCAAAthlete::toString(); //could cause problems
+    stream << "Evaluation: " << getEvaluation() << endl;
+    stream << "Position: " << getPosition() << endl;
+
+    return stream.str();
+}
+
+Position strToPosition(string& str) { //function to turn string into Position
+    if (str == "OL") return OL;
+    else if (str == "QB") return QB;
+    else if (str == "RB") return RB;
+    else if (str == "WR") return WR;
+    else if (str == "TE") return TE;
+    else if (str == "DL") return DL;
+    else if (str == "DE") return DE;
+    else if (str == "LB") return LB;
+    else if (str == "CB") return CB;
+    else if (str == "S") return S;
+    else if (str == "K") return K;
+}
+
+
+
+
