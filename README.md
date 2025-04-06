@@ -12,4 +12,4 @@ Project 5: NCAA Athlete Search
 
 Project 6: Study of OOP Constructs 
 
-Project 7: Templated MyVector Class
+Project 7: Vector Class From Scratch
