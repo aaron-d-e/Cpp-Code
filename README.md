@@ -13,3 +13,5 @@ Project 5: NCAA Athlete Search
 Project 6: Study of OOP Constructs 
 
 Project 7: Vector Class From Scratch
+
+Project 8: Binary File Sort
