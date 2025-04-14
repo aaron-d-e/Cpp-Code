@@ -17,6 +17,8 @@ int main(){
 	int sizeInt = sizeof(int);
 	int input;
 	int fileLength;
+	int currentVal;
+
 	fstream file("sortedInts", ios::binary | ios::in | ios::out);
 
 	if(!file.is_open()){
@@ -32,45 +34,54 @@ int main(){
 	fileLength = file.tellg();
 	file.seekg(0, ios::beg);
 
-
-	cout << "File length before (delete me later): " << fileLength << endl;
-	
 	//checks if empty file then prints the input integer
 	if(fileLength == 0){
+		cout << "if entered" << endl;
 		file.write(reinterpret_cast<char*>(&input), sizeof(input));	
 	}
-	else {
-		int compareValue;
-		int iter = 1;
-		file.seekg(-iter * sizeInt, ios::end);
-		file.read(reinterpret_cast<char*>(&compareValue), sizeInt);
-		cout << "VAlUE " << compareValue << endl; 
-		while(compareValue > input && (file.tellg() >= 4)){
-			file.seekg(-iter * sizeInt, ios::end);
-			cout << "get index: " << file.tellg() << endl;
-			file.read(reinterpret_cast<char*>(&compareValue), sizeInt);
-			iter++;
+	else{
+		file.seekg(-1 * sizeInt, ios::end);
+		file.read(reinterpret_cast<char*>(&currentVal), sizeInt);
+		if(currentVal <= input){
+			cout << "else-if entered" << endl;
+			file.seekp(0, ios::end);
+			file.write(reinterpret_cast<char*>(&input), sizeInt);
 		}
-		cout << file.tellg() << endl;
-		cout << file.tellp() << endl;
-	}
-	// file size after all operations
-	file.seekg(0, ios::end);
-	fileLength = file.tellg();
-	file.seekg(0, ios::beg);
+		else{
+			int i = (fileLength / 4) - 1;
+			cout << "else-else entered" << endl;
 
-	int output;
-	int iter2;
-	while(file.tellg() <= fileLength){
-		cout << file.tellg() << endl;
-		file.read(reinterpret_cast<char*>(&output), sizeInt);
-		cout << "Output: " << output << " ";
-		file.seekg(4 * iter2, ios::beg);
-		iter2++;
+			while(i >= 0){
+
+				file.seekg(i + sizeInt, ios::beg);
+				file.read(reinterpret_cast<char*>(&currentVal), sizeInt);
+
+				if(input >= currentVal){
+					break;
+				}
+
+				file.seekp((i + 1) * sizeInt, ios::beg);
+				file.write(reinterpret_cast<char*>(&currentVal), sizeInt);
+				i--;
+
+			}
+			file.seekp((i + 1) * sizeInt, ios::beg);
+			file.write(reinterpret_cast<char*>(&input), sizeInt);
+		}
+	}
+
+
+	file.seekg(0, ios::beg);
+	int printVal;
+	cout << "File Output." << endl;
+	file.read(reinterpret_cast<char*>(&printVal), sizeInt);
+	while(file.good()){
+		cout << printVal << " ";
+		file.read(reinterpret_cast<char*>(&printVal), sizeInt);
 	}
 	cout << endl;
 
-	cout << "File length after (delete me later): " << fileLength << endl;
+	file.close();
 
 	return 0;
 }
