@@ -7,6 +7,9 @@
  *
  * date modified: 04/08/2025
  * - initial git commit and file setup
+ *
+ * date modified: 04/13/2025
+ * - finished and submitted
  */ 
 
 #include <iostream>
@@ -36,34 +39,34 @@ int main(){
 
 	//checks if empty file then prints the input integer
 	if(fileLength == 0){
-		cout << "if entered" << endl;
 		file.write(reinterpret_cast<char*>(&input), sizeof(input));	
 	}
 	else{
 		file.seekg(-1 * sizeInt, ios::end);
 		file.read(reinterpret_cast<char*>(&currentVal), sizeInt);
-		if(currentVal <= input){
-			cout << "else-if entered" << endl;
+
+		if(currentVal <= input){ // logic to append to file
 			file.seekp(0, ios::end);
 			file.write(reinterpret_cast<char*>(&input), sizeInt);
 		}
 		else{
-			int i = (fileLength / 4) - 1;
-			cout << "else-else entered" << endl;
+			int i = (fileLength / 4) - 1; 
+			bool flag = false;
 
-			while(i >= 0){
+			while(i >= 0 && !flag){
 
-				file.seekg(i + sizeInt, ios::beg);
+				file.seekg(i * sizeInt, ios::beg);
 				file.read(reinterpret_cast<char*>(&currentVal), sizeInt);
 
 				if(input >= currentVal){
-					break;
+					flag = true; 
 				}
 
-				file.seekp((i + 1) * sizeInt, ios::beg);
-				file.write(reinterpret_cast<char*>(&currentVal), sizeInt);
-				i--;
-
+				if(!flag){
+					file.seekp((i + 1) * sizeInt, ios::beg);
+					file.write(reinterpret_cast<char*>(&currentVal), sizeInt);
+					i--;
+				}
 			}
 			file.seekp((i + 1) * sizeInt, ios::beg);
 			file.write(reinterpret_cast<char*>(&input), sizeInt);
@@ -75,6 +78,7 @@ int main(){
 	int printVal;
 	cout << "File Output." << endl;
 	file.read(reinterpret_cast<char*>(&printVal), sizeInt);
+
 	while(file.good()){
 		cout << printVal << " ";
 		file.read(reinterpret_cast<char*>(&printVal), sizeInt);
